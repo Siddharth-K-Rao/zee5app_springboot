@@ -24,21 +24,6 @@ import lombok.ToString;
 @Table(name = "subscription")
 public class Subscription implements Comparable<Subscription> {
 	
-//	public Subscription(String subId, String dateOfPurchase, String expiryDate, String paymentMode, String status, String type, String regId, Boolean autoRenewal, float amount) throws InvalidAmountException, InvalidIdLengthException {
-//		
-//		super();
-//		this.setAmount(amount);
-//		this.setAutoRenewal(autoRenewal);
-//		this.setSubId(subId);
-//		this.setDateOfPurchase(dateOfPurchase);
-//		this.setExpiryDate(expiryDate);
-//		this.setPaymentMode(paymentMode);
-//		this.setStatus(status);
-//		this.setType(type);
-//		this.setRegId(regId);
-//		
-//	}
-	
 	
 	@Id
 	@Column(name = "subId")
@@ -59,7 +44,7 @@ public class Subscription implements Comparable<Subscription> {
 	@NotBlank
 	private String type;
 	
-	@NotBlank
+	@NotNull
 	private boolean autoRenewal;
 	
 	@NotBlank

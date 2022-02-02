@@ -15,5 +15,5 @@ public interface EpisodeService {
 	public String deleteEpisodes(String id) throws IdNotFoundException;
 	public String modifyEpisodeDetails(String id, Episodes episode);
 	public Optional<Episodes> getEpisodeDetailsById(String id) throws InvalidNameException, InvalidIdLengthException;
-	public Optional<List<Episodes>> getAllEpisodeDetails(String id) throws InvalidNameException, InvalidIdLengthException;
+	public Optional<List<Episodes>> getAllEpisodeDetails() throws InvalidNameException, InvalidIdLengthException;
 }

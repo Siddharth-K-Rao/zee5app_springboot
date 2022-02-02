@@ -72,8 +72,7 @@ public class EpisodeServiceImpl implements EpisodeService {
 
 
 	@Override
-	public Optional<List<Episodes>> getAllEpisodeDetails(String id)
-			throws InvalidNameException, InvalidIdLengthException {
+	public Optional<List<Episodes>> getAllEpisodeDetails() throws InvalidNameException, InvalidIdLengthException {
 		
 		return Optional.ofNullable(episodeRepository.findAll());
 	}

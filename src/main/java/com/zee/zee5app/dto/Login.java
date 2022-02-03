@@ -29,6 +29,5 @@ public class Login {
 	@NotBlank
 	private String regId;
 	
-	private ROLE role;
 	
 }

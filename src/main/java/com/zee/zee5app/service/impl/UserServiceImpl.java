@@ -8,13 +8,17 @@ import javax.naming.InvalidNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zee.zee5app.dto.Login;
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.AlreadyExistsException;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidContactNumberException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidPasswordException;
+import com.zee.zee5app.repository.LoginRepository;
 import com.zee.zee5app.repository.UserRepository;
+import com.zee.zee5app.service.LoginService;
 import com.zee.zee5app.service.UserService;
 
 @Service
@@ -24,14 +28,41 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private LoginRepository loginRepository;
+	
+	@Autowired
+	private LoginService loginService;
+	
 	
 	
 	@Override
-	public String addUser(Register register) {
+	@org.springframework.transaction.annotation.Transactional(rollbackFor = AlreadyExistsException.class)
+	public String addUser(Register register) throws AlreadyExistsException {
+		
+		if(userRepository.existsByEmailAndContactNumber(register.getEmail(), register.getContactNumber()) == true) {
+			throw new AlreadyExistsException("This record already exists");
+		}
+		
 		Register register2 = userRepository.save(register);
 		
 		if(register2 != null) {
-			return "Success";
+			// Add credentials from loginService
+			Login addLogin = null;
+			addLogin = new Login(register.getEmail(), register.getPassword(), register.getId());
+			
+			if(loginRepository.existsByUserName(register.getEmail())) {
+				throw new AlreadyExistsException("This record already exists");
+			}
+			
+			String loginAddResult = loginService.addCredentials(addLogin);
+			
+			if(loginAddResult.equals("Success")) {
+				return "Record added in Register and Login";
+			}
+			else {
+				return "Fail";
+			}
 		}
 		else {
 			return "Fail";
